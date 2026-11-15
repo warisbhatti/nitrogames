@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NITROGAMES</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;background:#090b16;color:white;
+font-family:Arial,sans-serif;text-align:center
+}
+header{
+background:#151a2e;padding:22px;
+border-bottom:2px solid #00eaff
+}
+h1{color:#00eaff;font-size:32px;margin:5px}
+p{color:#bbb}
+.container{padding:20px}
+.games{
+display:grid;grid-template-columns:1fr 1fr;
+gap:15px;max-width:500px;margin:auto
+}
+.game{
+background:#191f35;padding:20px 8px;
+border:1px solid #303c60;border-radius:14px
+}
+.game span{font-size:38px}
+button{
+background:#00d9ff;color:#07101c;
+border:0;border-radius:9px;padding:12px 20px;
+font-weight:bold;margin-top:10px
+}
+#board{
+display:grid;grid-template-columns:repeat(3,85px);
+gap:7px;justify-content:center;margin:20px
+}
+.cell{
+height:85px;background:#202943;color:#00eaff;
+font-size:35px;border-radius:10px;
+display:grid;place-items:center
+}
+footer{padding:25px;color:#888}
+</style>
+</head>
+<body>
+<header>
+<h1>🎮 NITROGAMES</h1>
+<p>PLAY • WIN • ENJOY</p>
+</header>
+
+<div class="container">
+<h2>🔥 Welcome Gamers!</h2>
+<p>Choose your favourite game</p>
+
+<div class="games">
+<div class="game">
+<span>❌⭕</span>
+<h3>Tic Tac Toe</h3>
+<button onclick="startGame()">PLAY NOW</button>
+</div>
+<div class="game">
+<span>🏎️</span>
+<h3>Racing Games</h3>
+<p>Coming Soon</p>
+</div>
+<div class="game">
+<span>🏍️</span>
+<h3>Bike Games</h3>
+<p>Coming Soon</p>
+</div>
+<div class="game">
+<span>🧩</span>
+<h3>Puzzle Games</h3>
+<p>Coming Soon</p>
+</div>
+</div>
+
+<div id="playarea" hidden>
+<h2>Tic Tac Toe</h2>
+<p id="status">Player X turn</p>
+<div id="board"></div>
+<button onclick="resetGame()">RESTART</button>
+</div>
+</div>
+
+<footer>© 2026 NITROGAMES</footer>
+
+<script>
+let cells=Array(9).fill("");
+let player="X",finished=false;
+function startGame(){
+document.getElementById("playarea").hidden=false;
+resetGame();
+}
+function resetGame(){
+cells=Array(9).fill("");
+player="X";finished=false;
+document.getElementById("status").textContent="Player X turn";
+draw();
+}
+function draw(){
+let board=document.getElementById("board");
+board.innerHTML="";
+cells.forEach((v,i)=>{
+let b=document.createElement("button");
+b.className="cell";
+b.textContent=v;
+b.onclick=()=>move(i);
+board.appendChild(b);
+});
+}
+function move(i){
+if(cells[i]||finished)return;
+cells[i]=player;
+let wins=[[0,1,2],[3,4,5],[6,7,8],
+[0,3,6],[1,4,7],[2,5,8],
+[0,4,8],[2,4,6]];
+draw();
+if(wins.some(w=>w.every(n=>cells[n]===player))){
+document.getElementById("status").textContent="Player "+player+" wins!";
+finished=true;return;
+}
+if(cells.every(Boolean)){
+document.getElementById("status").textContent="It's a draw!";
+finished=true;return;
+}
+player=player==="X"?"O":"X";
+document.getElementById("status").textContent="Player "+player+" turn";
+}
+</script>
+</body>
+</html>
